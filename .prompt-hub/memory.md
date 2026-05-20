@@ -439,3 +439,23 @@
 - Validation : `pio run` SUCCESS (9.2 s). Pas de tests unitaires.
 - Outcome : success. Version → 0.1.18.
 - Next : commit + push ; flash device pour test visuel ; tag v0.1.18 si release.
+
+## 2026-05-20 08:40 — agent (Claude Code)
+- Action : génération de screenshots des apps pour le README + galerie.
+- Approche (validée user) : mockups générés par script (pas de capture device),
+  1 écran représentatif par app (menu + 9 apps). Fidélité ~1:1.
+- Méthode : `tools/gen_screenshots.py` (Pillow, venv /tmp/shotvenv) reproduit le
+  code de dessin du firmware. Réutilise la VRAIE police bitmap du device
+  (`.pio/libdeps/cardputer-adv/M5GFX/src/lgfx/Fonts/glcdfont.h`, glcdfont 5x7,
+  parsée à l'exécution) et l'art ASCII (`src/core/dwight_ascii.h`). Implémente
+  to565/from565/lerp565 pour la quantification couleur + portrait Dwight
+  (cellW=1, cellH=2, levelColor via le thème), drawSpeechBubble, drawWrappedText,
+  et le layout de chaque app. Sortie 240x135 upscalée x4 NEAREST.
+- Fichiers : tools/gen_screenshots.py (neuf), docs/screenshots/01..10*.png (neuf),
+  README.md (section Screenshots + galerie + vignette align=right par app +
+  arbre projet), version.md (0.1.18→0.1.19), releases.md, todo.
+- Validation : 10 PNG générés ; contrôle visuel OK (menu, focus, beetfarm,
+  presentation, answers, config) — police, bulles, barre, timer, portrait fidèles.
+- Outcome : success. Version → 0.1.19.
+- Next : commit + push. Si la police/le thème de l'UI change, relancer
+  `/tmp/shotvenv/bin/python tools/gen_screenshots.py` (ou recréer un venv Pillow).

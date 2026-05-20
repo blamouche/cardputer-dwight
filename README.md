@@ -42,6 +42,27 @@ The framework is built so adding a new app is a small, isolated change — see
   and of each app, with the menu list / app content on the right. The shared
   renderer lives in [src/core/DwightFace.h/.cpp](src/core/DwightFace.cpp).
 
+## Screenshots
+
+> These are not photos of the device: each frame is rendered 1:1 from the
+> firmware's own draw code (240 × 135, glcdfont text, RGB565 colors, the Dwight
+> ASCII portrait, default `green` theme) by
+> [tools/gen_screenshots.py](tools/gen_screenshots.py). Re-run it after any UI
+> change to refresh the gallery.
+
+<p align="center">
+  <img src="docs/screenshots/01-menu.png" width="440" alt="Launcher menu">
+  <br><em>Launcher menu — Dwight on the left, scrollable app list on the right.</em>
+</p>
+
+| Slide Sensei | Bears Don't Sleep | Ghost Writer |
+|:------------:|:-----------------:|:------------:|
+| ![Slide Sensei](docs/screenshots/02-slide-sensei.png) | ![Bears Don't Sleep](docs/screenshots/03-bears-dont-sleep.png) | ![Ghost Writer](docs/screenshots/04-ghost-writer.png) |
+| **Open Sesame** | **FALSE.** | **Back To Work** |
+| ![Open Sesame](docs/screenshots/05-open-sesame.png) | ![FALSE.](docs/screenshots/06-false.png) | ![Back To Work](docs/screenshots/07-back-to-work.png) |
+| **Schrute Wisdom** | **Beet Farm WiFi** | **Config** |
+| ![Schrute Wisdom](docs/screenshots/08-schrute-wisdom.png) | ![Beet Farm WiFi](docs/screenshots/09-beet-farm-wifi.png) | ![Config](docs/screenshots/10-config.png) |
+
 ## Hardware
 
 - M5Stack **Cardputer** or **Cardputer ADV** (ESP32-S3, 8 MB flash)
@@ -243,6 +264,8 @@ or restore after a wipe.
 
 ### Slide Sensei (`presentation_remote`)
 
+<img src="docs/screenshots/02-slide-sensei.png" align="right" width="240" alt="Slide Sensei screen">
+
 Turns the Cardputer into a BLE HID keyboard for Google Slides, PowerPoint,
 Keynote, etc. Dwight's portrait sits on the left; a speech bubble on the right
 prompts you to pair when disconnected and shows a big arrow + label each time
@@ -283,6 +306,8 @@ https://github.com/blamouche/cardputer-presentation-remote
 
 ### Bears Don't Sleep (`amphetamine`)
 
+<img src="docs/screenshots/03-bears-dont-sleep.png" align="right" width="240" alt="Bears Don't Sleep screen">
+
 Keeps a paired host awake — no more screen lock or sleep during a long read or
 download. While active it sends a single arrow-key tap every `interval_s`
 seconds, alternating **Up** then **Down** so nothing actually scrolls or
@@ -307,6 +332,8 @@ connected.
 3. Press `` ` `` to return to the launcher (this stops the taps).
 
 ### Ghost Writer (`keyboard`)
+
+<img src="docs/screenshots/04-ghost-writer.png" align="right" width="240" alt="Ghost Writer screen">
 
 Forwards the Cardputer's built-in **QWERTY** keyboard to the paired host over
 BLE — type on the Cardputer, the characters land on your laptop. Letters,
@@ -334,6 +361,8 @@ shared — see the note in [Full schema](#full-schema)).
    is the global "back" shortcut, so it is never sent to the host.
 
 ### Open Sesame (`dwight_unlock`)
+
+<img src="docs/screenshots/05-open-sesame.png" align="right" width="240" alt="Open Sesame screen">
 
 Types the **session password** of a paired computer over BLE so its lock
 screen unlocks itself — handy when the machine is across the desk. You can save
@@ -375,6 +404,8 @@ password followed by **Enter**.
 > Treat the card accordingly; this app trades secrecy for convenience.
 
 ### FALSE. (`dwight_answers`)
+
+<img src="docs/screenshots/06-false.png" align="right" width="240" alt="FALSE. answers list screen">
 
 A library of **ready-made phrases** ("answers") you can type onto the paired
 host over BLE. Pick one in the scrolling list and Dwight types it character by
@@ -422,6 +453,8 @@ on the device; the list is persisted under `apps.dwight_answers.phrases`.
 
 ### Back To Work (`dwight_focus`)
 
+<img src="docs/screenshots/07-back-to-work.png" align="right" width="240" alt="Back To Work countdown screen">
+
 A focus timer. Pick a duration and a **big full-screen countdown** ticks down
 while Dwight throws **escalating threats** to keep you on task. Try to bail out
 before the clock runs out (the global back key) and Dwight intercepts: he
@@ -451,6 +484,8 @@ grudgingly. No BLE or SD writes — it runs entirely on-device.
 
 ### Schrute Wisdom (`dwight_coaching`)
 
+<img src="docs/screenshots/08-schrute-wisdom.png" align="right" width="240" alt="Schrute Wisdom quote screen">
+
 A pep-talk machine. Dwight's portrait sits on the left and a **random
 motivational line** appears in a speech bubble on the right. Press **any key**
 (Enter, space, an arrow…) for the next random quote — it never repeats the same
@@ -471,6 +506,8 @@ it runs entirely on-device.
 | `quotes` | built-in list  | Array of strings drawn at random. Omit to use the built-in quotes. |
 
 ### Beet Farm WiFi (`beet_farm_wifi`)
+
+<img src="docs/screenshots/09-beet-farm-wifi.png" align="right" width="240" alt="Beet Farm WiFi access-point screen">
 
 Turns the Cardputer into an **open WiFi access point** named
 `Schrute_Farms_Free_WiFi` with a **captive portal**. As soon as a phone or
@@ -504,6 +541,8 @@ stack down. Uses the `ricmoo/QRCode` library; no internet, no BLE.
 | `channel`     | `1`                                              | WiFi channel for the SoftAP.     |
 
 ### Config (`config`)
+
+<img src="docs/screenshots/10-config.png" align="right" width="240" alt="Config sections screen">
 
 An on-device editor for the **Open Sesame** computer list — add, edit or
 remove machines straight from the Cardputer, no SD-card removal needed. Changes
@@ -542,6 +581,10 @@ move, `Enter` to open, `` ` `` to leave):
 dwight-assistant/
 ├── platformio.ini
 ├── README.md
+├── docs/
+│   └── screenshots/                  # generated 240×135 app mockups (README)
+├── tools/
+│   └── gen_screenshots.py            # renders the screenshots from the draw code
 ├── scripts/
 │   ├── merge_bin.py                  # post-build step → ./firmware.bin
 │   └── patch_blekeyboard.py          # pre-build patcher for the vendored lib

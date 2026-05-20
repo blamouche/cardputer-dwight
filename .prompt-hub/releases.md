@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.1.19 — 2026-05-20
+
+### Docs
+- **Screenshots du README** : ajout d'une galerie et d'une vignette par app.
+  Les visuels (240×135) ne sont pas des photos : ils sont rendus 1:1 à partir du
+  code de dessin du firmware (police glcdfont, quantification RGB565, portrait
+  ASCII de Dwight, thème `green`) par un nouveau script
+  `tools/gen_screenshots.py` (Pillow). 10 images générées dans
+  `docs/screenshots/` (menu + chaque application). Le script relit la vraie
+  police du device (`M5GFX/.../glcdfont.h`) et l'art ASCII (`dwight_ascii.h`)
+  pour rester fidèle ; à relancer après tout changement d'UI.
+
 ## 0.1.18 — 2026-05-20
 
 ### Fixes
