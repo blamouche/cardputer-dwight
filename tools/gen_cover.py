@@ -82,12 +82,6 @@ def main():
     draw_text(d, "M5Stack Cardputer office firmware", tx, 232, 2, fg)
     draw_text(d, "9 apps  BLE  WiFi  SD-config", tx, 262, 2, muted)
 
-    # Version pill.
-    ver = "v" + open(os.path.join(gs.ROOT, ".prompt-hub/version.md")).read().strip()
-    vw = text_w(ver, 3)
-    d.rounded_rectangle([tx, 300, tx + vw + 24, 300 + 36], radius=8, fill=gs.rgb(accent))
-    draw_text(d, ver, tx + 12, 307, 3, gs.THEME["background"])
-
     # --- Bottom filmstrip ----------------------------------------------------
     strip = ["01-menu.png", "02-slide-sensei.png", "07-back-to-work.png",
              "09-beet-farm-wifi.png"]
