@@ -459,3 +459,17 @@
 - Outcome : success. Version → 0.1.19.
 - Next : commit + push. Si la police/le thème de l'UI change, relancer
   `/tmp/shotvenv/bin/python tools/gen_screenshots.py` (ou recréer un venv Pillow).
+
+## 2026-05-20 09:00 — agent (Claude Code)
+- Action : vérification readiness M5Burner (USER CUSTOM > Publish).
+- Constats : firmware.bin = image complète @0x0 (magic 0xE9, 1.23 MB,
+  bootloader+partitions+boot_app0+app fusionnés via merge_bin.py) → format OK
+  pour M5Burner. Device = Cardputer ADV (board m5stack-stamps3, ESP32-S3, 8MB).
+  GitHub public OK (blamouche/cardputer-dwight). README complet.
+- Correction : le firmware.bin sur disque embarquait 0.1.17 (build antérieur aux
+  bumps) → rebuild `pio run -e cardputer-adv` → Version.h = 0.1.19, .bin frais.
+  firmware.bin est gitignored (*.bin) ; Version.h (tracké) committé à 0.1.19.
+- Manques pour publier : COVER absente (à composer depuis docs/screenshots/) ;
+  dernière release GitHub = v0.1.17 (tag v0.1.19 conseillé, non bloquant).
+- Outcome : success (vérification). Prêt sauf cover.
+- Next : générer une cover M5Burner ; éventuellement tag v0.1.19.
