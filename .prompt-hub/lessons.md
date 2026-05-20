@@ -40,3 +40,19 @@
 - `AppManager.h` ne forward-déclare que `class ConfigManager`. Toute app qui
   déréférence `config()` (ex. `config()->save()`, `config()->system()`) doit
   inclure `core/ConfigManager.h`, sinon erreur « invalid use of incomplete type ».
+
+## BLE HID : `isConnected()` ≠ prêt à taper — imposer un warm-up
+- Contexte : 2026-05-20, l'utilisateur observe que les premières touches après
+  connexion BLE sont mal interprétées puis « rentrent dans l'ordre ».
+- Cause : `BleKeyboard` (ESP32-NimBLE-Keyboard) met `connected=true` dans
+  `onConnect` dès l'événement GAP *connect*, AVANT que l'hôte ait souscrit aux
+  notifications du report HID (CCCD) et négocié les paramètres de connexion. Les
+  rapports envoyés dans cette fenêtre sont perdus/mal parsés.
+- Règle : ne jamais déclencher de frappe HID sur le seul `isConnected()`. Gater
+  l'envoi sur un **warm-up** (~1,5 s après la transition déconnecté→connecté) et
+  envoyer un rapport zéro d'amorçage au premier envoi réel. Centralisé dans
+  `BleHid::isReady()` / `isWarmingUp()` ; `tap()`/`type()` no-op tant que pas prêt.
+  Les apps affichent un état « SYNC / Stabilizing… » pendant le warm-up.
+- La détection de transition se fait par edge-detection dans `refresh()` (appelé
+  depuis `isConnected()` que les apps pollent chaque frame) — pas besoin de
+  callback lib. Voir [[blekeyboard_patches]].

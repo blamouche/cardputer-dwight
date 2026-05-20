@@ -486,3 +486,27 @@
 - Next : surveiller le run CI ; une fois la release v0.1.19 OK, tout est prêt
   pour publier sur M5Burner (Name, Version 0.1.19, Device Cardputer, GitHub,
   FirmWare=firmware.bin, Cover=docs/m5burner-cover.png).
+
+## 2026-05-20 09:14 — agent (Claude Code)
+- Suivi : run CI v0.1.19 (26147017199) = SUCCESS (1m04s). Release GitHub
+  **v0.1.19 publiée** (non-draft) avec assets `firmware.bin` (@0x0) +
+  `cardputer-dwight-v0.1.19.bin`. https://github.com/blamouche/cardputer-dwight/releases/tag/v0.1.19
+- Outcome : success. Points 1 (cover) + 2 (tag/release) terminés. Tout est prêt
+  pour publier sur M5Burner.
+
+## 2026-05-20 09:40 — agent (Claude Code)
+- Action : fix frappe BLE garbled en début de connexion (warm-up gate).
+- Cause : BleKeyboard onConnect → connected=true immédiat, avant souscription HID
+  + négo conn params hôte → 1ers rapports perdus.
+- Archi : `BleHid` gagne `isReady()`/`isWarmingUp()` + warm-up kWarmupMs=1500ms.
+  refresh() edge-detecte la connexion (appelé par isConnected()), timestamp
+  g_connectedAtMs ; tap()/type() gatés sur isReady() + primeOnce() (releaseAll
+  propre au 1er envoi). Apps BLE (presentation, amphetamine, keyboard, unlock,
+  answers) : statut SYNC/Stabilizing pendant warm-up + actions gatées isReady().
+- Fichiers : src/core/BleHid.{h,cpp}, src/apps/{presentation_remote,amphetamine,
+  keyboard,dwight_unlock,dwight_answers}/*.cpp, version.md (0.1.19→0.1.20),
+  releases.md, lessons.md, memory.md.
+- Validation : `pio run` SUCCESS (8.4 s). Pas de test device encore.
+- Outcome : success. Version → 0.1.20.
+- Next : flasher + tester sur device le délai de stabilisation (ajuster kWarmupMs
+  si besoin). Tag v0.1.20 si release voulue.

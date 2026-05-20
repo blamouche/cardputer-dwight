@@ -35,7 +35,7 @@ void AmphetamineApp::onEnter() {
 
 void AmphetamineApp::loop() {
     uint32_t now = millis();
-    if (BleHid::isConnected() && now - _lastTapMs >= _intervalMs) {
+    if (BleHid::isReady() && now - _lastTapMs >= _intervalMs) {
         _lastTapMs = now;
         if (_tapUp) BleHid::tapUp();
         else        BleHid::tapDown();
@@ -54,10 +54,11 @@ void AmphetamineApp::draw() {
     canvas->setTextSize(1);
 
     bool connected = BleHid::isConnected();
+    bool warming   = BleHid::isWarmingUp();
 
-    // Status, top-right (clear of the portrait).
-    const char* statusStr = connected ? "AWAKE" : "WAITING";
-    canvas->setTextColor(connected ? gTheme.success : gTheme.warning);
+    // Status, top-right (clear of the portrait). SYNC = post-connect warm-up.
+    const char* statusStr = !connected ? "WAITING" : (warming ? "SYNC" : "AWAKE");
+    canvas->setTextColor((connected && !warming) ? gTheme.success : gTheme.warning);
     int sw = 6 * (int)strlen(statusStr);
     canvas->setCursor(DISPLAY_W - sw - 2, 1);
     canvas->print(statusStr);
@@ -79,6 +80,10 @@ void AmphetamineApp::draw() {
     if (!connected) {
         drawWrappedText(canvas,
                     "Pair me over Bluetooth and this machine will NOT sleep.",
+                    innerX, innerTop, innerW, gTheme.foreground, 11);
+    } else if (warming) {
+        drawWrappedText(canvas,
+                    "Synchronizing. Stand by before I take the watch.",
                     innerX, innerTop, innerW, gTheme.foreground, 11);
     } else {
         drawWrappedText(canvas,

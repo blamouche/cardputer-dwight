@@ -70,7 +70,7 @@ void DwightAnswersApp::handleListKeys() {
             return;
         }
     }
-    if (st.enter && !_phrases.empty() && BleHid::isConnected()) {
+    if (st.enter && !_phrases.empty() && BleHid::isReady()) {
         typeSelected();
     }
 }
@@ -145,14 +145,15 @@ void DwightAnswersApp::drawList() {
     const int maxChars = w / 6;
 
     bool connected = BleHid::isConnected();
+    bool warming   = BleHid::isWarmingUp();
 
     canvas->setTextColor(gTheme.accent);
     canvas->setCursor(x, 3);
     canvas->print("DWIGHT ANSWERS");
 
-    // BLE status, top-right.
-    const char* statusStr = connected ? "ONLINE" : "WAITING";
-    canvas->setTextColor(connected ? gTheme.success : gTheme.warning);
+    // BLE status, top-right. SYNC = post-connect warm-up (typing held back).
+    const char* statusStr = !connected ? "WAITING" : (warming ? "SYNC" : "ONLINE");
+    canvas->setTextColor((connected && !warming) ? gTheme.success : gTheme.warning);
     int sw = 6 * (int)strlen(statusStr);
     canvas->setCursor(DISPLAY_W - sw - 2, 3);
     canvas->print(statusStr);
@@ -211,8 +212,9 @@ void DwightAnswersApp::drawList() {
 
     canvas->setTextColor(gTheme.muted);
     canvas->setCursor(x, DISPLAY_H - 11);
-    canvas->print(connected ? "Ent=type n=new e=edit d=del"
-                            : "Pair me first  n=new e=edit");
+    canvas->print(!connected ? "Pair me first  n=new e=edit"
+                  : warming   ? "Stabilizing... n=new e=edit"
+                              : "Ent=type n=new e=edit d=del");
     canvas->pushSprite(0, 0);
 }
 

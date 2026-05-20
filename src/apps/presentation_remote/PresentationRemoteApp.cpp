@@ -97,7 +97,7 @@ void PresentationRemoteApp::loop() {
 }
 
 void PresentationRemoteApp::sendKey(uint8_t code, Direction dir) {
-    if (!BleHid::isConnected() || code == 0) return;
+    if (!BleHid::isReady() || code == 0) return;  // hold input during warm-up
     BleHid::tap(code);
     _currentDir = dir;
     _pressTimeMs = millis();
@@ -125,16 +125,19 @@ void PresentationRemoteApp::draw() {
     canvas->setTextSize(1);
 
     bool connected = BleHid::isConnected();
+    bool warming   = BleHid::isWarmingUp();
+    bool ready     = connected && !warming;
 
-    // BLE status, top-right (clear of the portrait on the left).
-    const char* statusStr = connected ? "CONNECTED" : "WAITING";
+    // BLE status, top-right (clear of the portrait on the left). SYNC marks the
+    // post-connect warm-up window during which key presses are held back.
+    const char* statusStr = !connected ? "WAITING" : (warming ? "SYNC" : "CONNECTED");
     const int ICON_W = 7, ICON_PAD = 2;
     int totalW = ICON_W + ICON_PAD + 6 * (int)strlen(statusStr);
     int startX = DISPLAY_W - totalW;
     int icx = startX + ICON_W / 2;
     int icy = 4;
-    uint16_t scolor = connected ? gTheme.success : gTheme.warning;
-    if (connected) {
+    uint16_t scolor = ready ? gTheme.success : gTheme.warning;
+    if (ready) {
         canvas->fillCircle(icx, icy, 3, scolor);
     } else {
         canvas->drawCircle(icx, icy, 3, scolor);
@@ -171,6 +174,10 @@ void PresentationRemoteApp::draw() {
     if (!connected) {
         drawWrappedText(canvas,
                     "Pair me over Bluetooth first. I don't wait forever.",
+                    innerX, innerTop, innerW, gTheme.foreground, 11);
+    } else if (warming) {
+        drawWrappedText(canvas,
+                    "Synchronizing with the host. One moment.",
                     innerX, innerTop, innerW, gTheme.foreground, 11);
     } else if (_currentDir != DIR_NONE && millis() - _pressTimeMs < 1500) {
         drawDirArrow(canvas, bx + bw / 2, by + bh / 2 - 6, (int)_currentDir,

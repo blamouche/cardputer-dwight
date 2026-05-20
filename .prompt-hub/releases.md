@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.1.20 — 2026-05-20
+
+### Fixes
+- **BLE HID — frappe en début de connexion** : les premières touches étaient
+  perdues ou mal interprétées juste après l'appairage, puis tout rentrait dans
+  l'ordre après quelques secondes. Cause : `BleKeyboard` passe `connected=true`
+  dès l'événement GAP *connect*, avant que l'hôte (macOS) ait souscrit aux
+  notifications HID et négocié les paramètres de connexion ; les rapports envoyés
+  dans cette fenêtre sont perdus.
+- Correctif centralisé dans `BleHid` : fenêtre de **warm-up de ~1,5 s** après la
+  connexion. Nouveaux `BleHid::isReady()` / `isWarmingUp()` ; `tap()` et `type()`
+  ne tapent plus tant que le lien n'est pas prêt et envoient un rapport « propre »
+  d'amorçage au premier envoi. Toutes les apps BLE (Slide Sensei, Bears Don't
+  Sleep, Ghost Writer, Open Sesame, FALSE.) affichent un état **SYNC /
+  Stabilizing…** pendant le warm-up et conditionnent la frappe à `isReady()`.
+
 ## 0.1.19 — 2026-05-20
 
 ### Docs

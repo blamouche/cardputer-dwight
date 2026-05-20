@@ -15,6 +15,18 @@ void begin(const char* deviceName, const char* manufacturer, uint8_t batteryLeve
 bool isActive();
 bool isConnected();
 
+// True only once the BLE link has settled after a connection. BleKeyboard flips
+// "connected" on the GAP connect event, but the host (macOS/Windows) still needs
+// a beat to subscribe to the HID input-report notifications and finish parameter
+// negotiation; reports sent before that are dropped or mis-parsed — which is why
+// the first keystrokes used to come out garbled. Typing helpers below are gated
+// on this, so they no-op until the link is ready.
+bool isReady();
+
+// Connected but still inside the post-connect warm-up window. Apps can show a
+// "stabilizing" hint so the user waits a beat before typing.
+bool isWarmingUp();
+
 // Press, brief hold, then release + defensive releaseAll() to clear the HID
 // report. No-op if not connected or keycode == 0.
 void tap(uint8_t keycode);

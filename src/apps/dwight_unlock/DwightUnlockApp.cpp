@@ -35,7 +35,7 @@ void DwightUnlockApp::loop() {
                 _selection = (_selection + 1) % (int)_computers.size();
             }
         }
-        if (st.enter && !_computers.empty() && BleHid::isConnected()) {
+        if (st.enter && !_computers.empty() && BleHid::isReady()) {
             sendPassword(_computers[_selection]);
         }
     }
@@ -60,10 +60,12 @@ void DwightUnlockApp::draw() {
     canvas->setTextSize(1);
 
     bool connected = BleHid::isConnected();
+    bool warming   = BleHid::isWarmingUp();
 
-    // BLE status, top-right (clear of the portrait on the left).
-    const char* statusStr = connected ? "CONNECTED" : "WAITING";
-    canvas->setTextColor(connected ? gTheme.success : gTheme.warning);
+    // BLE status, top-right (clear of the portrait on the left). SYNC marks the
+    // post-connect warm-up during which typing is held back.
+    const char* statusStr = !connected ? "WAITING" : (warming ? "SYNC" : "CONNECTED");
+    canvas->setTextColor((connected && !warming) ? gTheme.success : gTheme.warning);
     int sw = 6 * (int)strlen(statusStr);
     canvas->setCursor(DISPLAY_W - sw - 2, 1);
     canvas->print(statusStr);
@@ -124,7 +126,9 @@ void DwightUnlockApp::draw() {
     // Footer hint.
     canvas->setTextColor(gTheme.muted);
     canvas->setCursor(colX, DISPLAY_H - 12);
-    canvas->print(connected ? "Enter = unlock" : "Pair me first");
+    canvas->print(!connected ? "Pair me first"
+                  : warming   ? "Stabilizing..."
+                              : "Enter = unlock");
 
     canvas->pushSprite(0, 0);
 }

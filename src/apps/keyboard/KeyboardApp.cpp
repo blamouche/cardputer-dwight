@@ -43,7 +43,7 @@ void KeyboardApp::onEnter() {
 }
 
 void KeyboardApp::loop() {
-    if (BleHid::isConnected() && _mgr->inputChanged() && _mgr->inputPressed()) {
+    if (BleHid::isReady() && _mgr->inputChanged() && _mgr->inputPressed()) {
         auto st = M5Cardputer.Keyboard.keysState();
         bool typed = false;
 
@@ -74,10 +74,12 @@ void KeyboardApp::draw() {
     canvas->setTextSize(1);
 
     bool connected = BleHid::isConnected();
+    bool warming   = BleHid::isWarmingUp();
 
-    // Status, top-right (clear of the portrait).
-    const char* statusStr = connected ? "ONLINE" : "WAITING";
-    canvas->setTextColor(connected ? gTheme.success : gTheme.warning);
+    // Status, top-right (clear of the portrait). While the link warms up after
+    // connecting, show SYNC so the user waits instead of typing into the void.
+    const char* statusStr = !connected ? "WAITING" : (warming ? "SYNC" : "ONLINE");
+    canvas->setTextColor((connected && !warming) ? gTheme.success : gTheme.warning);
     int sw = 6 * (int)strlen(statusStr);
     canvas->setCursor(DISPLAY_W - sw - 2, 1);
     canvas->print(statusStr);
@@ -94,6 +96,8 @@ void KeyboardApp::draw() {
     const char* msg;
     if (!connected) {
         msg = "Pair me over Bluetooth. Then every key is mine.";
+    } else if (warming) {
+        msg = "Hold. Synchronizing with the host before I take your keys.";
     } else if (millis() - _lastKeyMs < 2500) {
         msg = LINES[_lineIdx];
     } else {
