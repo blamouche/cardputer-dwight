@@ -1,0 +1,103 @@
+{
+  "system": {
+    "user_name": "",
+    "language": "en",
+    "brightness": 255,
+    "buzzer_enabled": true,
+    "buzzer_volume": 128,
+    "sleep_timeout_s": 0,
+    "primary_color": "#D8A25C",
+    "color_theme": "green"
+  },
+  "wifi": {
+    "enabled": false,
+    "ssid": "",
+    "password": ""
+  },
+  "time": {
+    "timezone": "Europe/Paris",
+    "ntp_server": "pool.ntp.org",
+    "format_24h": true,
+    "date_format": "dd/mm/yyyy"
+  },
+  "menu": {
+    "enabled_apps": [
+      "presentation_remote",
+      "amphetamine",
+      "keyboard",
+      "dwight_unlock",
+      "dwight_answers",
+      "dwight_focus",
+      "dwight_coaching",
+      "beet_farm_wifi",
+      "config"
+    ]
+  },
+  "apps": {
+    "presentation_remote": {
+      "device_name": "Dwight presentation control",
+      "manufacturer": "M5Stack",
+      "battery_level": 100,
+      "keys": {
+        "left":  "LEFT_ARROW",
+        "right": "RIGHT_ARROW",
+        "up":    "UP_ARROW",
+        "down":  "DOWN_ARROW"
+      }
+    },
+    "amphetamine": {
+      "device_name": "Dwight Assistant",
+      "manufacturer": "M5Stack",
+      "battery_level": 100,
+      "interval_s": 10
+    },
+    "keyboard": {
+      "device_name": "Dwight Assistant",
+      "manufacturer": "M5Stack",
+      "battery_level": 100,
+      "layout": "azerty"
+    },
+    "dwight_unlock": {
+      "device_name": "Dwight Assistant",
+      "manufacturer": "M5Stack",
+      "battery_level": 100,
+      "layout": "azerty",
+      "computers": [
+        {
+          "name": "Work laptop",
+          "password": "changeme"
+        }
+      ]
+    },
+    "dwight_answers": {
+      "device_name": "Dwight Assistant",
+      "manufacturer": "M5Stack",
+      "battery_level": 100,
+      "layout": "azerty",
+      "phrases": [
+        "Sounds good, I'll take care of it.",
+        "Let me circle back on that.",
+        "Per my last email...",
+        "Adding this to the agenda.",
+        "Identity theft is not a joke."
+      ]
+    },
+    "dwight_focus": {
+      "default_minutes": 25
+    },
+    "dwight_coaching": {
+      "quotes": [
+        "Whenever I'm about to do something, I think 'would an idiot do that?' and if they would, I do not do that thing.",
+        "Discipline equals freedom. Beets equal power. You equal mine to command.",
+        "A real entrepreneur is a major risk taker. Take the risk. Then crush it.",
+        "Identity theft is not a joke. Neither is wasting this day. Seize it, drone."
+      ]
+    },
+    "beet_farm_wifi": {
+      "ssid": "Schrute_Farms_Free_WiFi",
+      "youtube_url": "https://www.youtube.com/watch?v=AJmaVPfyudQ",
+      "channel": 1
+    },
+    "config": {}
+  }
+}
