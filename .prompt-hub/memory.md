@@ -410,3 +410,18 @@
 - Next : test réseau réel — rejoindre le WiFi `Schrute_Farms_Free_WiFi` avec un
   téléphone, vérifier l'ouverture auto du portail captif + QR/bouton PLAY +
   compteur de clients.
+
+## 2026-05-20 03:35 — agent (Claude Code)
+- Action : publication du projet sur **GitHub** (`blamouche/cardputer-dwight`,
+  **public**) + mise en place CI **GitHub Actions** pour tags/releases avec .bin.
+- Détail : `git init` (projet jusque-là non-git), commit initial, `gh repo create
+  --public --push`. Workflow `.github/workflows/release.yml` : build PlatformIO
+  sur push/PR vers main, et sur tag `v*` → compile puis `softprops/action-gh-release`
+  publie une release avec `firmware.bin` (image mono-fichier flash @0x0) attaché +
+  une copie nommée `cardputer-dwight-vX.Y.Z.bin`, notes d'install incluses.
+- `.gitignore` : retrait de `!firmware.bin` (le binaire vient désormais de la CI).
+- Version bumpée 0.1.16 → 0.1.17. Tag `v0.1.17` poussé → run CI 26135852019
+  SUCCESS (3m34s). Release v0.1.17 OK avec 2 assets (1 294 432 o).
+- Outcome : success. Repo + CI + release opérationnels.
+- Next (prochaines releases) : bump `.prompt-hub/version.md` → commit → push →
+  `git tag -a vX.Y.Z && git push origin vX.Y.Z` ; la CI publie la release+.bin.

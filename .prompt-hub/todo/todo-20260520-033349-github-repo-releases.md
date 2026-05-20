@@ -25,4 +25,14 @@ Chaque release doit embarquer le fichier `firmware.bin` mono-fichier (flash 0x0)
 6. [ ] Créer le tag `v0.1.17` + release → vérifier que la CI attache le .bin.
 
 ## Review
-(à compléter)
+- État : **completed**.
+- Repo public créé : https://github.com/blamouche/cardputer-dwight
+- Workflow `.github/workflows/release.yml` : build sur push/PR + release sur tag `v*`.
+- Tag `v0.1.17` poussé → run CI 26135852019 SUCCESS (3m34s, `pio run` OK).
+- Release v0.1.17 publiée avec 2 assets (1 294 432 o chacun) :
+  `firmware.bin` et `cardputer-dwight-v0.1.17.bin` (image mono-fichier, flash @ 0x0).
+- `.gitignore` : `firmware.bin` n'est plus versionné (vient de la CI).
+- Procédure pour les prochaines releases : bump `.prompt-hub/version.md`,
+  commit, puis `git tag -a vX.Y.Z -m … && git push origin vX.Y.Z` → la CI build
+  et publie la release avec le .bin automatiquement.
+- Limite : actions sur Node 20 (deprecation warning, sans impact avant juin 2026).
