@@ -3,6 +3,10 @@
 ## 0.1.19 — 2026-05-20
 
 ### Docs
+- **Cover M5Burner** : image de couverture `docs/m5burner-cover.png` (1000×600)
+  composée via `tools/gen_cover.py` — portrait Dwight, titre, version et bandeau
+  de 4 écrans. Réutilisée en hero du README. Prête pour le champ *Cover* de
+  M5Burner (USER CUSTOM > Publish).
 - **Screenshots du README** : ajout d'une galerie et d'une vignette par app.
   Les visuels (240×135) ne sont pas des photos : ils sont rendus 1:1 à partir du
   code de dessin du firmware (police glcdfont, quantification RGB565, portrait

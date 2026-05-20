@@ -473,3 +473,16 @@
   dernière release GitHub = v0.1.17 (tag v0.1.19 conseillé, non bloquant).
 - Outcome : success (vérification). Prêt sauf cover.
 - Next : générer une cover M5Burner ; éventuellement tag v0.1.19.
+
+## 2026-05-20 09:10 — agent (Claude Code)
+- Action : (1) cover M5Burner + (2) tag/release v0.1.19.
+- Cover : `tools/gen_cover.py` (importe gen_screenshots) compose
+  `docs/m5burner-cover.png` (1000×600) = portrait Dwight (scale 3) + titre
+  "DWIGHT ASSISTANT" (glcdfont) + tagline + pill version + bandeau 4 écrans
+  (menu, slide-sensei, back-to-work, beet-farm). Ajoutée en hero du README.
+- Release : tag annoté v0.1.19 poussé → déclenche la CI (.github/workflows/
+  release.yml) qui build et publie la release GitHub avec firmware.bin (@0x0).
+- Outcome : voir entrée suivante pour le statut CI.
+- Next : surveiller le run CI ; une fois la release v0.1.19 OK, tout est prêt
+  pour publier sur M5Burner (Name, Version 0.1.19, Device Cardputer, GitHub,
+  FirmWare=firmware.bin, Cover=docs/m5burner-cover.png).

@@ -1,5 +1,9 @@
 # Dwight Assistant
 
+<p align="center">
+  <img src="docs/m5burner-cover.png" width="720" alt="Dwight Assistant — M5Cardputer office firmware">
+</p>
+
 A multi-application desktop assistant firmware for the **M5Stack Cardputer**
 and **Cardputer ADV** (ESP32-S3). Boots into a launcher menu, runs one app at
 a time, and stores every preference in a single JSON file on the micro-SD card
@@ -582,9 +586,11 @@ dwight-assistant/
 ├── platformio.ini
 ├── README.md
 ├── docs/
+│   ├── m5burner-cover.png            # M5Burner / README cover image
 │   └── screenshots/                  # generated 240×135 app mockups (README)
 ├── tools/
-│   └── gen_screenshots.py            # renders the screenshots from the draw code
+│   ├── gen_screenshots.py            # renders the screenshots from the draw code
+│   └── gen_cover.py                  # composes the cover from portrait + shots
 ├── scripts/
 │   ├── merge_bin.py                  # post-build step → ./firmware.bin
 │   └── patch_blekeyboard.py          # pre-build patcher for the vendored lib
