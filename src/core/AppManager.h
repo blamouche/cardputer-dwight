@@ -29,6 +29,10 @@ public:
     App* current() const { return _current; }
     App* home() const    { return _apps.empty() ? nullptr : _apps[0]; }
 
+    // Last non-home app the user was in before returning to the menu. The menu
+    // uses it to preselect the row of the app that was just active.
+    App* lastApp() const { return _lastApp; }
+
     M5Canvas*      canvas() const { return _canvas; }
     ConfigManager* config() const { return _config; }
 
@@ -42,6 +46,7 @@ public:
 private:
     std::vector<App*> _apps;
     App*           _current = nullptr;
+    App*           _lastApp = nullptr;
     M5Canvas*      _canvas  = nullptr;
     ConfigManager* _config  = nullptr;
     bool           _inputChanged = false;

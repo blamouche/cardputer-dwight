@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.18 — 2026-05-20
+
+### Fixes
+- **Menu** : au retour au menu depuis une application via la touche ESC, le
+  curseur se positionne désormais sur la ligne de l'application qui était active
+  (au lieu de repartir systématiquement sur le premier élément). `AppManager`
+  mémorise la dernière app non-home (`lastApp()`) et `MenuApp::onEnter()`
+  préselectionne sa ligne dans la liste visible (fallback : premier item).
+
 ## 0.1.17 — 2026-05-20
 
 ### Build / CI

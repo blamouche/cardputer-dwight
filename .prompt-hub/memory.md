@@ -425,3 +425,17 @@
 - Outcome : success. Repo + CI + release opérationnels.
 - Next (prochaines releases) : bump `.prompt-hub/version.md` → commit → push →
   `git tag -a vX.Y.Z && git push origin vX.Y.Z` ; la CI publie la release+.bin.
+
+## 2026-05-20 04:00 — agent (Claude Code)
+- Action : fix UX menu — au retour ESC depuis une app, le curseur du menu se
+  positionne sur l'app qui était active (avant : toujours le 1er item).
+- Archi : `AppManager::backToMenu()` enregistre `_lastApp = _current` avant de
+  basculer sur le home ; nouvel accesseur `AppManager::lastApp()`.
+  `MenuApp::onEnter()` cherche `lastApp()` dans `visibleApps()` et règle
+  `_selection` sur son index (fallback 0). Touche back = `KEY_BACK_TO_MENU` ('`').
+- Fichiers : src/core/AppManager.h (+_lastApp, +lastApp()), src/core/AppManager.cpp
+  (backToMenu), src/apps/menu/MenuApp.cpp (onEnter), version.md (0.1.17→0.1.18),
+  releases.md, todo.
+- Validation : `pio run` SUCCESS (9.2 s). Pas de tests unitaires.
+- Outcome : success. Version → 0.1.18.
+- Next : commit + push ; flash device pour test visuel ; tag v0.1.18 si release.

@@ -53,6 +53,16 @@ void MenuApp::setup(AppManager& mgr) {
 
 void MenuApp::onEnter() {
     _selection = 0;
+
+    // Preselect the row of the app the user was just in (back-to-menu via ESC),
+    // so the cursor lands on it instead of jumping back to the first item.
+    if (App* last = _mgr->lastApp()) {
+        auto items = visibleApps(*_mgr);
+        for (int i = 0; i < (int)items.size(); i++) {
+            if (items[i] == last) { _selection = i; break; }
+        }
+    }
+
     _dirty = true;
 }
 

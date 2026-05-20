@@ -41,6 +41,7 @@ void AppManager::switchToId(const char* id) {
 void AppManager::backToMenu() {
     if (_apps.empty() || _current == _apps[0]) return;
     if (_current && !_current->onBackRequested()) return;
+    _lastApp = _current;  // remembered so the menu can preselect this app
     switchTo(_apps[0]);
 }
 
